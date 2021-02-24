@@ -3,28 +3,11 @@
 // When publishing to IIS, for example, Default Site, there
 // is conflict with relative paths.This approach solves it.
 // .. for IDE
-const __SITE = location.port.length > 0 ? '..' : '/BlazorLabs';
+// const __SITE = location.port.length > 0 ? '..' : '/BlazorThrive';
+// Smarter
+const __SITE = '..';
 
-function addToLocalStorage(key, value) {
-    localStorage[key] = value;
-}
-
-function readLocalStorage(key, defaultValue = null) {
-    let s = localStorage.getItem(key);
-    if (s == null) {
-        if (defaultValue) {
-            return defaultValue;
-        }
-        return null;
-    }
-    return s;
-}
-
-function addCookie(key, value, days = 365) {
-    var expires = new Date();
-    expires.setTime(expires.getTime() + 24 * 60 * 60 * 1000 * days); // 365 year  
-    document.cookie = `${key}=${value}; expires=${expires.toUTCString()} path=/`;
-}
+_log("** _getSiteName: " + _getSiteName());
 
 // Emulates C# s.Format(...)
 // First, checks if it isn't implemented yet.
