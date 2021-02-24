@@ -1,0 +1,35 @@
+﻿@page "/math-plotter"
+@inject IJSRuntime jsRunTime
+@code {
+    IJSObjectReference module;
+
+    readonly string moduleFile = "./modules/mathPlotterSample.js";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) {
+            module = await jsRunTime.InvokeAsync<IJSObjectReference>("import", moduleFile);
+            var args = new {
+                appendVersion = "1.0",
+                skinNumber = 0,
+            };
+            await module.InvokeVoidAsync("Sample", args);
+        }
+    }
+}
+
+<!--
+  CubicSpread
+  By: Luis Harvey Triana Vega
+-->
+<h3>Math Plotter</h3>
+<p>Graphics generation using interoperability, without using any third-party libraries or frameworks.</p>
+<hr />
+<canvas id="placeholder" width="500" height="300"></canvas>
+<br />
+<br />
+<pre id="result" style="width:500px;"></pre>
+<br />
+
+<!-- Strategy for get events from Plotter -->
+<input type="hidden" id="plot-info" />
