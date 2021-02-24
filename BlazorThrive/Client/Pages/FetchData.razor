@@ -8,49 +8,69 @@
 <p>This component demonstrates fetching data from the server.</p>
 
 @if (forecasts == null) {
-<p>@prompt</p>
+<pre>@prompt</pre>
 }
 else {
-<table class="table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var forecast in forecasts) {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
-                <td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts) {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
     WeatherForecast[] forecasts;
 
-    string prompt = "Loading...";
+    string prompt = "Loading...", js;
 
     protected override async Task OnInitializedAsync()
     {
         try {
-            var js = await Http.GetStringAsync("WeatherForecast");
-            var so = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(js, so);
-
+            // with validate
+            js = await Http.GetStringAsync("WeatherForecast");
+            if (IsJson(js)) {
+                var so = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(js, so);
+            }
+            else {
+                // server respond with html error due to...
+                prompt = "the resource '/WeatherForecast' is not found.";
+            }
+            // normal
             // forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
         }
         catch (Exception e) {
-            prompt = $"Exception: {e.Message}";
+            prompt = $"Exception: {e.Message}\n\njs? {(js == null ? "null" : js)}";
         }
 
     }
 
+
+    bool IsJson(string js)
+    {
+        var s = js.Trim();
+
+        if ((s.StartsWith("{") && s.EndsWith("}")) || //For object
+            (s.StartsWith("[") && s.EndsWith("]"))) //For array
+        {
+            return true;
+        }
+        Console.WriteLine("The variable has not JSON structure.");
+        return false;
+    }
 }

@@ -7,7 +7,7 @@
 // Smarter
 const __SITE = '..';
 
-_log("** _getSiteName: " + _getSiteName());
+_log("*_getSiteName: " + _getSiteName());
 
 // Emulates C# s.Format(...)
 // First, checks if it isn't implemented yet.
