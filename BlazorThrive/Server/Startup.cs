@@ -1,3 +1,4 @@
+using BlazorThrive.Server.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +26,8 @@ namespace BlazorThrive.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<BooksStoreContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

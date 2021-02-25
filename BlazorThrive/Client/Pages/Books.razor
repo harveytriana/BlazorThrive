@@ -1,40 +1,39 @@
-﻿@page "/fetchdata"
-@using BlazorThrive.Shared
+﻿@page "/books"
 @using System.Text.Json;
 @inject HttpClient _hc
-
-<h1>Weather forecast</h1>
+<h2>Books Store</h2>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null) {
+@if (books == null) {
 <pre>@prompt</pre>
 }
 else {
-    <table class="table">
+    <table class="table" style="font-family:Courier New, Courier, monospace">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Stock</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts) {
+            @foreach (var i in books) {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@i.Author</td>
+                    <td>@i.Name</td>
+                    <td>@i.Price</td>
+                    <td>@i.InStock</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-
 @code {
-    WeatherForecast[] forecasts;
+    record Book(string Id, string Name, string Author, bool InStock, decimal Price, DateTime CreationDate);
+
+    Book[] books;
 
     string prompt = "Loading...", js;
 
@@ -42,22 +41,23 @@ else {
     {
         try {
             // with validate
-            js = await _hc.GetStringAsync("WeatherForecast");
+            js = await _hc.GetStringAsync("api/Books");
             if (Utils.IsJson(js)) {
                 var so = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-                forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(js, so);
+                books = JsonSerializer.Deserialize<Book[]>(js, so);
             }
             else {
                 // server respond with html error due to...
-                prompt = "the resource '/WeatherForecast' is not found.";
+                prompt = "the resource 'api/Books' is not found.";
             }
             // normal
-            // forecasts = await _hc.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            // books = await _hc.GetFromJsonAsync<Book[]>("api/Books");
         }
         catch (Exception e) {
             prompt = $"Exception: {e.Message}\n\njs? {(js == null ? "null" : js)}";
         }
 
     }
+
 
 }
