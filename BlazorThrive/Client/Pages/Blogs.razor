@@ -1,0 +1,56 @@
+﻿@page "/blogs"
+@inject HttpClient _httpClient
+@code {
+    List<Blog> items;
+    string prompt = "Loading...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            var blogs = await _httpClient.GetFromJsonAsync<IEnumerable<Blog>>("api/blog");
+            items = blogs
+                .Select(x => new Blog {// not load the heaavy content
+                    BlogId = x.BlogId,
+                    Title = x.Title,
+                    Summary = x.Summary,
+                    Language = x.Language,
+                    Published = x.Published,
+                    Tags = x.Tags
+                }).OrderByDescending(p => p.Published).ToList();
+        }
+        catch(Exception e) {
+            prompt = $"Exception: {e.Message}";
+        }
+    }
+}
+
+<h1>Blogs</h1>
+@if (items == null) {
+    <h5>@prompt</h5>
+}
+else {
+    <table class="table" style="font-family:Courier New, Courier, monospace">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Summary</td>
+                <td>Posted</td>
+                <td>Tags</td>
+                <td>Lang</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in items) {
+                <tr>
+                    <td>@i.Title</td>
+                    <td>@i.Summary</td>
+                    <td>@i.Published.ToShortDateString()</td>
+                    <td>@i.Tags</td>
+                    <td>@i.Language</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+    <br />
+}

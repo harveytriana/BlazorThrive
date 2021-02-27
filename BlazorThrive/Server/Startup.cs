@@ -1,17 +1,19 @@
+using BlazorSpread.Server.Services;
 using BlazorThrive.Server.Services;
+using BlazorThrive.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorThrive.Server
 {
     public class Startup
     {
+        const string SQL = "SmarterAsp";// "LocalDevelopment"; // 
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +30,10 @@ namespace BlazorThrive.Server
             services.AddRazorPages();
 
             services.AddScoped<BooksStoreContext>();
+            // SQL
+            services.AddDbContext<SqlContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SQL)));
+            // entities
+            services.AddScoped<IDataService<Blog>, SqlService<Blog>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +45,8 @@ namespace BlazorThrive.Server
             }
             else {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, 
+                // see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

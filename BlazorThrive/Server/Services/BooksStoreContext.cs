@@ -10,7 +10,7 @@ namespace BlazorThrive.Server.Services
 
         readonly IMongoCollection<Book> _booksCollection;
 
-        readonly string _section="MongoAtlas";
+        readonly string _section="MongoAtlas"; // | MongoNetwork
 
         public BooksStoreContext(IConfiguration configuration)
         {
