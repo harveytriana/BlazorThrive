@@ -1,0 +1,32 @@
+﻿@page "/md-test"
+
+@if (html == null) {
+    <p>Loading...</p>
+}
+else {
+    <div>
+        <div>
+            @((MarkupString)html)
+        </div>
+    </div>
+}
+
+@code{
+    string html;
+
+    string md = @"
+# Something
+
+---
+
+This a simple **MD**
+
+Goodby _Nobody_
+
+";
+    protected override void OnInitialized()
+    {
+        html = MarkdownParser.Parse(md);
+    }
+
+}

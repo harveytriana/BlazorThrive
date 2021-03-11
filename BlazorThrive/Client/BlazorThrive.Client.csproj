@@ -10,12 +10,21 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     <PackageReference Include="Markdig" Version="0.23.0" />
-    
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Markdig.SyntaxHighlighting\MarkDig.Extension.csproj" />
     <ProjectReference Include="..\Shared\BlazorThrive.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MarkDig.Extension">
+      <HintPath>..\..\SharedReference\MarkDig.Extension.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <BlazorWebAssemblyLazyLoad Include="MarkDig.dll" />
+  </ItemGroup>
+  
+  
 </Project>
