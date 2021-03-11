@@ -2,15 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>22e726eb-d104-4090-842c-0b8aa0737b43</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="Markdig" Version="0.23.0" />
+    
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Markdig.SyntaxHighlighting\MarkDig.Extension.csproj" />
     <ProjectReference Include="..\Shared\BlazorThrive.Shared.csproj" />
   </ItemGroup>
 
