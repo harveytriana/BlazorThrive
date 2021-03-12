@@ -1,4 +1,3 @@
-@using System.Reflection
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 @inject LazyAssemblyLoader assemblyLoader
@@ -21,7 +20,8 @@
     private async Task HandleNavigate(NavigationContext context)
     {
         if (context.Path == "lazyLoading") {
-            var assemblies = await assemblyLoader.LoadAssembliesAsync(new[] { "MarkDig.dll" });
+            var assemblies = await assemblyLoader.LoadAssembliesAsync(new[] { 
+                "MarkDig.dll" });
         }
     }
 }
