@@ -3,8 +3,8 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 @inject LazyAssemblyLoader assemblyLoader
 
-<Router AppAssembly="@typeof(Program).Assembly" 
-        PreferExactMatches="@true" 
+<Router AppAssembly="@typeof(Program).Assembly"
+        PreferExactMatches="@true"
         OnNavigateAsync="HandleNavigate">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -17,14 +17,11 @@
 </Router>
 
 
-@code {  
+@code {
     private async Task HandleNavigate(NavigationContext context)
     {
         if (context.Path == "lazyLoading") {
-            var assemblies = await assemblyLoader.LoadAssembliesAsync(
-                new[] {
-                    "MarkDig.dll"
-                    });
+            var assemblies = await assemblyLoader.LoadAssembliesAsync(new[] { "MarkDig.dll" });
         }
     }
 }

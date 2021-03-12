@@ -3,7 +3,7 @@
 // ======================================
 using BlazorThrive.Shared;
 using Markdig;
-using Markdig.SyntaxHighlighting;
+using MarkdigHighlighting;
 
 namespace BlazorThrive.Client
 {

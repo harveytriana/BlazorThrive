@@ -13,13 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MarkdigHighlighting\MarkdigHighlighting.csproj" />
     <ProjectReference Include="..\Shared\BlazorThrive.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="MarkDig.Extension">
-      <HintPath>..\..\SharedReference\MarkDig.Extension.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
