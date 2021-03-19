@@ -1,0 +1,50 @@
+﻿using AspNetCore.SEOHelper.Sitemap;
+using System;
+using System.Collections.Generic;
+
+namespace BlazorThrive.Server
+{
+    // Create and Configure sitemap.xml in ASP.NET Core
+    // c-sharpcorner.com/article/create-and-configure-sitemap-xml-in-asp-net-core/
+
+    public class Urlset
+    {
+        public string Xmlns { get; set; } = "http://www.sitemaps.org/schemas/sitemap/0.9";
+        public List<Url> Urls { get; set; }
+    }
+
+    public class Url // -> SitemapNode in SEOHelper!
+    {
+        public string Loc { get; set; }             // url of our site.
+        public DateTime Lastmod { get; set; }       // when the web page was last modified.
+        public Changefreq Changefreq { get; set; }  // an optional tag. It suggests how often a user agent should visit it again ** 
+        public float Priority { get; set; }         // represents site map priority.
+    }
+
+    // ** enum
+    public enum Changefreq
+    {
+        always,
+        hourly,
+        daily,
+        weekly,
+        monthly,
+        yearly,
+        never
+    }
+
+    public class SEOActions
+    {
+        public SEOActions()
+        {
+            var list = new List<SitemapNode> {
+                new SitemapNode { LastModified = DateTime.UtcNow, Priority = 0.8, Url = "https://www.example.com/asp-dot-net-turotial-part1", Frequency = SitemapFrequency.Daily },
+                new SitemapNode { LastModified = DateTime.UtcNow, Priority = 0.8, Url = "https://www.example.com/asp-dot-net-turotial-part2", Frequency = SitemapFrequency.Yearly },
+                new SitemapNode { LastModified = DateTime.UtcNow, Priority = 0.7, Url = "https://www.example.com/asp-dot-net-turotial-part3", Frequency = SitemapFrequency.Monthly }
+            };
+
+            new SitemapDocument().CreateSitemapXML(list, Startup.ROOTPATH);
+            // sitemap.xml file should be create in root directory
+        }
+    }
+}

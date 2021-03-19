@@ -1,6 +1,29 @@
 ﻿@page "/"
+@inject HttpClient _hc
 
 <h1>Blazor Thrive</h1>
 <hr />
 This is an experiment...
+<br /><br />
+<button class="btn btn-info" @onclick="BuldSiteMap">Build Site Map</button>
+<br /><br />
+<p>SiteMap? @prompt</p>
+
+@code{
+    string prompt = "Ready.";
+
+    async Task BuldSiteMap()
+    {
+        try {
+            var siteMap = await _hc.GetFromJsonAsync<bool>("api/sitemap");
+
+            prompt = siteMap ? "YES" : "NONE";
+        }
+        catch (Exception e) {
+            prompt = e.Message;
+        }
+
+
+    }
+}
 

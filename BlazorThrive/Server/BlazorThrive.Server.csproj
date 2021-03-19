@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="robots.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.SEOHelper" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
@@ -13,9 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="robots.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Client\BlazorThrive.Client.csproj" />
     <ProjectReference Include="..\Shared\BlazorThrive.Shared.csproj" />
   </ItemGroup>
-
 
 </Project>

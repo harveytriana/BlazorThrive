@@ -7,16 +7,26 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using System;
+using AspNetCore.SEOHelper;
 
 namespace BlazorThrive.Server
 {
     public class Startup
     {
-        const string SQL = "SmarterAsp";// "LocalDevelopment"; // 
+        const string SQL = "LocalDevelopment"; 
 
-        public Startup(IConfiguration configuration)
+        public static string  ROOTPATH { get;private set; }
+        public static bool ISDEVELOPER { get; private set; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+
+            ROOTPATH = env.ContentRootPath;
+
+            ISDEVELOPER = env.IsDevelopment();
+           
         }
 
         public IConfiguration Configuration { get; }
@@ -34,6 +44,8 @@ namespace BlazorThrive.Server
             services.AddDbContext<SqlContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SQL)));
             // entities
             services.AddScoped<IDataService<Blog>, SqlService<Blog>>();
+
+            services.AddSingleton<FileLogger>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,11 +61,14 @@ namespace BlazorThrive.Server
                 // see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            // SEO
+            app.UseXMLSitemap(env.ContentRootPath);
+            // app.UseRobotsTxt(env.ContentRootPath);
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseEndpoints(endpoints => {
