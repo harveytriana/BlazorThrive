@@ -1,5 +1,4 @@
 
-
 Site published
 http://visionary-002-site5.itempurl.com
 
@@ -16,3 +15,40 @@ https://www.youtube.com/watch?v=NrgZUkloois&list=PLvw3ram9RBUw_Ird80NvkVBrxiPhDY
 
 Project
     <ProjectReference Include="..\..\MarkdigHighlighting\MarkdigHighlighting.csproj" />
+
+
+
+Intentando mejrar en el LAzy
+WORKS!!
+----------------
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@inject LazyAssemblyLoader assemblyLoader
+
+<Router AppAssembly="@typeof(Program).Assembly"
+        PreferExactMatches="@true"
+        OnNavigateAsync="HandleNavigate">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+
+@code {
+    private async Task HandleNavigate(NavigationContext context)
+    {
+        if (context.Path == "lazyLoading") {
+            var assemblies = await assemblyLoader.LoadAssembliesAsync(new[] { 
+                "MarkDig.dll" });
+        }
+    }
+}
+
+---------------
+
+WHY NOT?
